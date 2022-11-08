@@ -1,5 +1,4 @@
 import re
-import MySQLdb
 
 
 def preprocess_text(text):
@@ -10,17 +9,3 @@ def preprocess_text(text):
         text = re.sub('[^a-zA-Zа-яА-Я1-9]+', ' ', text)
         text = re.sub(' +', ' ', text)
         return text.strip()
-
-
-connection = MySQLdb.connect(host="localhost",
-                             user="root",
-                             passwd="root",
-                             db="tweets")
-cur = connection.cursor()
-query = "SELECT ttext FROM sentiment"
-cur.execute(query)
-with open('tweets.txt', 'w', encoding='utf-8') as w_file:
-    for row in cur.fetchall():
-        p_tweet = preprocess_text(row[0])
-        print(p_tweet, file=w_file)
-connection.close()
